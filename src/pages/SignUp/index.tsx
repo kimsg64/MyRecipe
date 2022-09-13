@@ -1,22 +1,16 @@
-import { doc } from 'firebase/firestore/lite';
-import { db } from 'src/firebase';
-import React, { useCallback, useState } from 'react';
-import { Button, Form, Header, Input, Label, Wrapper } from './style';
+import { useCallback, useState } from 'react';
+import { Button, Error, Form, Header, Input, Label, Success, Wrapper } from './style';
+import { createNewUser } from '@src/firebase';
+import { Navigate } from 'react-router-dom';
+import useInput from '@hooks/useInput';
 
 const SignUp = () => {
-  const [email, setEmail] = useState('');
-  const [nickname, setNickname] = useState('');
+  const [email, onChangeEmail] = useInput('');
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [mismatchError, setMismatchError] = useState(false);
-
-  const onChangeEmail = useCallback((e: any) => {
-    setEmail(e.target.value);
-  }, []);
-
-  const onChangeNickname = useCallback((e: any) => {
-    setNickname(e.target.value);
-  }, []);
+  const [signUpError, setSignUpError] = useState(false);
+  const [signUpSuccess, setSignUpSuccess] = useState(false);
 
   const onChangePassword = useCallback(
     (e: any) => {
@@ -35,21 +29,31 @@ const SignUp = () => {
   );
 
   const onSubmitForm = useCallback(
-    (e: any) => {
+    async (e: any) => {
       e.preventDefault();
 
       if (mismatchError) {
         console.log('password mismatched!');
       } else {
-        const user = doc(db, 'user', 'email');
-        console.log('user: ', user);
-        console.log(
-          `post them! email: ${email}, nickname: ${nickname}, password: ${password}, passwordCheck: ${passwordCheck}`,
-        );
+        setSignUpSuccess(false);
+        setSignUpError(false);
+        try {
+          const userCredential = await createNewUser(email, password);
+          const user = userCredential.user;
+          console.log(`new user:`, user);
+          setSignUpSuccess(true);
+        } catch (error: any) {
+          console.log('error occured!: ', error);
+          setSignUpError(true);
+        }
       }
     },
-    [email, nickname, password, passwordCheck, mismatchError],
+    [email, password, mismatchError],
   );
+
+  if (signUpSuccess) {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <Wrapper>
@@ -59,12 +63,6 @@ const SignUp = () => {
           <span>Email</span>
           <div>
             <Input type="email" id="email" value={email} onChange={onChangeEmail} />
-          </div>
-        </Label>
-        <Label>
-          <span>NickName</span>
-          <div>
-            <Input type="text" id="nickname" value={nickname} onChange={onChangeNickname} />
           </div>
         </Label>
         <Label>
@@ -78,6 +76,9 @@ const SignUp = () => {
           <div>
             <Input type="password" id="passwordCheck" value={passwordCheck} onChange={onChangePasswordCheck} />
           </div>
+          {mismatchError && <Error>비밀번호가 일치하지 않습니다.</Error>}
+          {signUpError && <Error>회원가입에 실패했습니다.</Error>}
+          {signUpSuccess && <Success>회원가입 성공! 로그인 페이지로 이동합니다.</Success>}
         </Label>
         <Button type="submit">Sing Up!</Button>
       </Form>

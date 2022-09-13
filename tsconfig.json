@@ -1,4 +1,5 @@
 {
+  "extends": "./tsconfig.paths.json",
   "compilerOptions": {
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -14,16 +15,7 @@
     "resolveJsonModule": true,
     // "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "baseUrl": ".",
-    "paths": {
-      // "@hooks/*": ["hooks/*"],
-      // "@components/*": ["components/*"],
-      "@layouts/*": ["layouts/*"],
-      "@pages/*": ["src/pages/*"]
-      // "@utils/*": ["utils/*"],
-      // "@typings/*": ["typings/*"]
-    }
+    "jsx": "react-jsx"
   },
-  "include": ["src", "src/pages"]
+  "include": ["src", "carco.config.js"]
 }
