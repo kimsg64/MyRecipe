@@ -1,44 +1,47 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-// import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getAuth } from 'firebase/auth';
-import { checkLoginStatus, logout } from '@src/firebase';
-import { Button } from '../SignUp/style';
+import { getLoginStatus, getUserInfo, logout } from '@src/firebase';
+import { Button } from '@pages/SignUp/style';
+import Search from '@src/layouts/Search';
 
 const Main = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState(Object);
+  const [currentUser, setCurrentUser] = useState('');
 
   useEffect(() => {
     try {
-      checkLoginStatus(setIsLoggedIn);
-      const auth = getAuth();
-      setCurrentUser(auth.currentUser);
-      // console.log('is logged in?', auth.currentUser);
+      getLoginStatus(setIsLoggedIn);
     } catch (error: any) {
-      // console.log(error);
+      console.log(error);
     }
-  }, [isLoggedIn, currentUser]);
+  }, []);
+
+  useEffect(() => {
+    try {
+      getUserInfo(setCurrentUser);
+    } catch (error: any) {
+      console.log(error);
+    }
+  }, [isLoggedIn]);
 
   const onClickLogout = () => {
     logout();
-    setIsLoggedIn(false);
   };
 
   if (isLoggedIn && currentUser) {
     return (
       <div>
-        {currentUser.email} 로그인함
+        {currentUser} 로그인함
         <Button onClick={onClickLogout}>로그아웃</Button>
+        <Search />
       </div>
     );
   }
 
   return (
     <div>
-      메인 페이지
       <div>
-        <Link to="/login">로그인</Link>
+        <Link to="/login">로그인 하러가기</Link>
       </div>
       <div>
         <Link to="/signup">회원가입</Link>

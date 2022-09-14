@@ -17,7 +17,7 @@ const LogIn = () => {
       setLoginError('');
       try {
         const userCredential = await login(email, password);
-        console.log('userCredential: ', userCredential);
+        // console.log('userCredential: ', userCredential);
         setLoginSuccess(true);
       } catch (error: any) {
         // console.log('error occured! ', error.code);
