@@ -1,9 +1,10 @@
 import { useCallback, useState } from 'react';
-import { Button, Error, Form, Header, Input, Label, Success } from '@pages/SignUp/style';
+import { Button, Error, Form, Header, Input, Label, LinkContainer, Success } from '@pages/SignUp/style';
 import { login } from '@src/firebase';
 import { Navigate } from 'react-router-dom';
 import useInput from '@hooks/useInput';
 import DefaultLayout from '@src/layouts/DefaultLayout';
+import { Link } from 'react-router-dom';
 
 const LogIn = () => {
     const [email, onChangeEmail] = useInput('');
@@ -50,6 +51,9 @@ const LogIn = () => {
                     {loginError && <Error>로그인 실패({loginError})!</Error>}
                     {loginSuccess && <Success>로그인 성공!</Success>}
                 </Label>
+                <LinkContainer>
+                    <Link to="/signup">회원가입</Link>
+                </LinkContainer>
                 <Button type="submit">Login!</Button>
             </Form>
         </DefaultLayout>
