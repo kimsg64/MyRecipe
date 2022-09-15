@@ -1,89 +1,95 @@
 import { useCallback, useState } from 'react';
-import { Button, Error, Form, Header, Input, Label, Success, Wrapper } from './style';
+import { Button, Error, Form, Header, Input, Label, Success } from './style';
 import { createNewUser } from '@src/firebase';
 import { Navigate } from 'react-router-dom';
 import useInput from '@hooks/useInput';
+import DefaultLayout from '@src/layouts/DefaultLayout';
 
 const SignUp = () => {
-  const [email, onChangeEmail] = useInput('');
-  const [password, setPassword] = useState('');
-  const [passwordCheck, setPasswordCheck] = useState('');
-  const [mismatchError, setMismatchError] = useState(false);
-  const [signUpError, setSignUpError] = useState(false);
-  const [signUpSuccess, setSignUpSuccess] = useState(false);
+    const [email, onChangeEmail] = useInput('');
+    const [password, setPassword] = useState('');
+    const [passwordCheck, setPasswordCheck] = useState('');
+    const [mismatchError, setMismatchError] = useState(false);
+    const [signUpError, setSignUpError] = useState(false);
+    const [signUpSuccess, setSignUpSuccess] = useState(false);
 
-  const onChangePassword = useCallback(
-    (e: any) => {
-      setPassword(e.target.value);
-      setMismatchError(e.target.value !== passwordCheck);
-    },
-    [passwordCheck],
-  );
+    const onChangePassword = useCallback(
+        (e: any) => {
+            setPassword(e.target.value);
+            setMismatchError(e.target.value !== passwordCheck);
+        },
+        [passwordCheck],
+    );
 
-  const onChangePasswordCheck = useCallback(
-    (e: any) => {
-      setPasswordCheck(e.target.value);
-      setMismatchError(e.target.value !== password);
-    },
-    [password],
-  );
+    const onChangePasswordCheck = useCallback(
+        (e: any) => {
+            setPasswordCheck(e.target.value);
+            setMismatchError(e.target.value !== password);
+        },
+        [password],
+    );
 
-  const onSubmitForm = useCallback(
-    async (e: any) => {
-      e.preventDefault();
+    const onSubmitForm = useCallback(
+        async (e: any) => {
+            e.preventDefault();
 
-      if (mismatchError) {
-        console.log('password mismatched!');
-      } else {
-        setSignUpSuccess(false);
-        setSignUpError(false);
-        try {
-          const userCredential = await createNewUser(email, password);
-          const user = userCredential.user;
-          console.log(`new user:`, user);
-          setSignUpSuccess(true);
-        } catch (error: any) {
-          console.log('error occured!: ', error);
-          setSignUpError(true);
-        }
-      }
-    },
-    [email, password, mismatchError],
-  );
+            if (mismatchError) {
+                console.log('password mismatched!');
+            } else {
+                setSignUpSuccess(false);
+                setSignUpError(false);
+                try {
+                    const userCredential = await createNewUser(email, password);
+                    const user = userCredential.user;
+                    console.log(`new user:`, user);
+                    setSignUpSuccess(true);
+                } catch (error: any) {
+                    console.log('error occured!: ', error);
+                    setSignUpError(true);
+                }
+            }
+        },
+        [email, password, mismatchError],
+    );
 
-  if (signUpSuccess) {
-    return <Navigate to="/login" />;
-  }
+    if (signUpSuccess) {
+        return <Navigate to="/login" />;
+    }
 
-  return (
-    <Wrapper>
-      <Header>SIGN UP</Header>
-      <Form onSubmit={onSubmitForm}>
-        <Label>
-          <span>Email</span>
-          <div>
-            <Input type="email" id="email" value={email} onChange={onChangeEmail} />
-          </div>
-        </Label>
-        <Label>
-          <span>Password</span>
-          <div>
-            <Input type="password" id="password" value={password} onChange={onChangePassword} />
-          </div>
-        </Label>
-        <Label>
-          <span>Password Check</span>
-          <div>
-            <Input type="password" id="passwordCheck" value={passwordCheck} onChange={onChangePasswordCheck} />
-          </div>
-          {mismatchError && <Error>비밀번호가 일치하지 않습니다.</Error>}
-          {signUpError && <Error>회원가입에 실패했습니다.</Error>}
-          {signUpSuccess && <Success>회원가입 성공! 로그인 페이지로 이동합니다.</Success>}
-        </Label>
-        <Button type="submit">Sing Up!</Button>
-      </Form>
-    </Wrapper>
-  );
+    return (
+        <DefaultLayout>
+            <Header>SIGN UP</Header>
+            <Form onSubmit={onSubmitForm}>
+                <Label>
+                    <span>Email</span>
+                    <div>
+                        <Input type="email" id="email" value={email} onChange={onChangeEmail} />
+                    </div>
+                </Label>
+                <Label>
+                    <span>Password</span>
+                    <div>
+                        <Input type="password" id="password" value={password} onChange={onChangePassword} />
+                    </div>
+                </Label>
+                <Label>
+                    <span>Password Check</span>
+                    <div>
+                        <Input
+                            type="password"
+                            id="passwordCheck"
+                            value={passwordCheck}
+                            onChange={onChangePasswordCheck}
+                        />
+                    </div>
+                    {mismatchError && <Error>비밀번호가 일치하지 않습니다.</Error>}
+                    {signUpError && <Error>회원가입에 실패했습니다.</Error>}
+                    {signUpSuccess && <Success>회원가입 성공! 로그인 페이지로 이동합니다.</Success>}
+                </Label>
+                <Button type="submit">Sing Up!</Button>
+            </Form>
+        </DefaultLayout>
+    );
 };
 
 export default SignUp;
