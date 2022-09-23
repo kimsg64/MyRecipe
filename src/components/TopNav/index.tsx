@@ -1,11 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { TopHeader } from './style';
+import { HamburgerIcon, TopHeader } from './style';
 import { getLoginStatus } from '@src/firebase';
 import gravatar from 'gravatar';
-import SubMenu from '../SubMenu/inedx';
+import SubMenu from '@components/SubMenu/inedx';
 
-const TopNav = () => {
+interface Props {
+    onClickHamburger: () => void;
+}
+
+const TopNav = (props: Props) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isOpenProfile, setIsOpenProfile] = useState(false);
 
@@ -24,22 +28,24 @@ const TopNav = () => {
     return (
         <TopHeader>
             <section>
-                <span>🍔</span>
+                <HamburgerIcon onClick={props.onClickHamburger} />
             </section>
             <section>
                 <Link to="/">MyRecipe</Link>
             </section>
             <section>
                 {isLoggedIn ? (
-                    <span onClick={onClickProfile}>
-                        <img src={gravatar.url('email', { s: '36px', d: 'retro' })} alt={'user'} />
-                    </span>
+                    <>
+                        <span onClick={onClickProfile}>
+                            <img src={gravatar.url('email', { s: '36px', d: 'retro' })} alt={'user'} />
+                        </span>
+                    </>
                 ) : (
                     <span>
                         <Link to="/login">Login</Link>
                     </span>
                 )}
-                {isOpenProfile && <SubMenu isOpenProfile={isOpenProfile} onClickProfile={onClickProfile} />}
+                {isOpenProfile && <SubMenu onClickProfile={onClickProfile} />}
             </section>
         </TopHeader>
     );

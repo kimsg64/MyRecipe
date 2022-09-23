@@ -67,7 +67,7 @@ export const getUserInfo = (currentUserSetter: React.Dispatch<React.SetStateActi
 export const getUid = (uidSetter: React.Dispatch<React.SetStateAction<string>>) => {
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            const uid = user.email || '';
+            const uid = user.uid || '';
             uidSetter(uid);
         } else {
             uidSetter('');

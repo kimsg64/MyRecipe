@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getLoginStatus, getUserInfo, logout } from '@src/firebase';
-import { Button } from '@pages/SignUp/style';
+import { getLoginStatus, getUserInfo } from '@src/firebase';
 import Search from '@src/layouts/WhichLayout';
 import DefaultLayout from '@src/layouts/DefaultLayout';
 
@@ -25,16 +24,11 @@ const Home = () => {
         }
     }, [isLoggedIn]);
 
-    const onClickLogout = () => {
-        logout();
-    };
-
     if (isLoggedIn && currentUser) {
         return (
             <DefaultLayout>
                 <div>
                     {currentUser} 로그인함
-                    <Button onClick={onClickLogout}>로그아웃</Button>
                     <Search />
                 </div>
             </DefaultLayout>
