@@ -16,11 +16,11 @@ export const BodyWrapper = styled.div`
     position: relative;
 `;
 
-type showProps = {
+type mainProps = {
     show: boolean;
 };
 
-export const HamburgerMenu = styled.ul<showProps>`
+export const HamburgerMenu = styled.ul<mainProps>`
     width: ${(props) => (props.show ? '16%' : '0')};
     transition-duration: 0.5s;
     min-height: calc(100% - 64px);
@@ -45,7 +45,7 @@ export const HamburgerMenu = styled.ul<showProps>`
     }
 `;
 
-export const MainContainer = styled.main<showProps>`
+export const MainContainer = styled.main<mainProps>`
     width: ${(props) => (props.show ? '84%' : '100%')};
     transition-duration: 0.5s;
     min-height: calc(100% - 64px);

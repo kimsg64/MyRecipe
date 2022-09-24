@@ -12,7 +12,6 @@ const Search = () => {
 
     return (
         <Form onSubmit={onSubmitForm}>
-            검색ㄱㄱ
             <Input type="text" value={keyword} onChange={onChangeKeyword} />
         </Form>
     );

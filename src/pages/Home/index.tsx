@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getLoginStatus, getUserInfo } from '@src/firebase';
-import Search from '@src/layouts/WhichLayout';
-import DefaultLayout from '@src/layouts/DefaultLayout';
+import Search from '@src/pages/Search';
+import DefaultLayout from '@layouts/DefaultLayout';
 
 const Home = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -28,7 +28,6 @@ const Home = () => {
         return (
             <DefaultLayout>
                 <div>
-                    {currentUser} 로그인함
                     <Search />
                 </div>
             </DefaultLayout>

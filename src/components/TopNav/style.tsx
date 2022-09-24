@@ -8,6 +8,7 @@ export const TopHeader = styled.header`
     background-color: rgb(255, 225, 96);
     position: fixed;
     top: 0;
+    z-index: 1000;
     user-select: none;
 
     & section,
