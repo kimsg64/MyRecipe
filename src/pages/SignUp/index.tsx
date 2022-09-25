@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
 import { Button, Error, Form, Header, Input, Label, Success } from './style';
-import { createNewUser } from '@src/firebase';
+import { createNewUser } from '@utils/firebase';
 import { Navigate } from 'react-router-dom';
 import useInput from '@hooks/useInput';
-import DefaultLayout from '@src/layouts/DefaultLayout';
+import DefaultLayout from '@layouts/DefaultLayout';
 
 const SignUp = () => {
     const [email, onChangeEmail] = useInput('');

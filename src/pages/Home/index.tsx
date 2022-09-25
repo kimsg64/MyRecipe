@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { getLoginStatus, getUserInfo } from '@src/firebase';
-import Search from '@src/pages/Search';
+import { Link, Navigate } from 'react-router-dom';
+import { getLoginStatus, getUserInfo } from '@utils/firebase';
 import DefaultLayout from '@layouts/DefaultLayout';
 
 const Home = () => {
@@ -14,7 +13,7 @@ const Home = () => {
         } catch (error: any) {
             console.log(error);
         }
-    }, []);
+    }, [currentUser]);
 
     useEffect(() => {
         try {
@@ -25,13 +24,7 @@ const Home = () => {
     }, [isLoggedIn]);
 
     if (isLoggedIn && currentUser) {
-        return (
-            <DefaultLayout>
-                <div>
-                    <Search />
-                </div>
-            </DefaultLayout>
-        );
+        return <Navigate to="/search" />;
     }
 
     return (

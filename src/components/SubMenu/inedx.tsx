@@ -1,5 +1,6 @@
-import { getUserInfo, logout } from '@src/firebase';
+import { getUserInfo, logout } from '@utils/firebase';
 import { useCallback, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { BackDrop, SubMenuContainer } from './style';
 
 interface Props {
@@ -23,6 +24,9 @@ const SubMenu = (props: Props) => {
 
     const onClickLogout = useCallback(() => {
         logout();
+        setCurrentUser('');
+        props.onClickProfile();
+        return <Link to={`/`} />;
     }, []);
 
     return (

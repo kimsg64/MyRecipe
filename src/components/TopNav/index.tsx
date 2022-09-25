@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { HamburgerIcon, TopHeader } from './style';
-import { getLoginStatus } from '@src/firebase';
 import gravatar from 'gravatar';
+import { getLoginStatus } from '@utils/firebase';
 import SubMenu from '@components/SubMenu/inedx';
 
 interface Props {

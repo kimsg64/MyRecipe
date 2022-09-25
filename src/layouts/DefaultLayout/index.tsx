@@ -1,5 +1,6 @@
-import TopNav from '@src/components/TopNav';
-import { useCallback, useState } from 'react';
+import TopNav from '@components/TopNav';
+import React, { useCallback, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { BodyWrapper, HamburgerMenu, MainContainer, PageWrapper } from './style';
 
 interface Props {
@@ -8,14 +9,14 @@ interface Props {
 
 const DefaultLayout = (props: React.PropsWithChildren<Props>) => {
     const [isOpenHamburgerMenu, setIsOpenHamburgerMenu] = useState(false);
-    const [mode, setMode] = useState('search');
 
     const onClickHamburger = useCallback(() => {
         setIsOpenHamburgerMenu((prev) => !prev);
     }, []);
 
-    const onClickMenu = useCallback((e) => {
-        setMode(e.currentTarget.dataset.mode);
+    const onClickNavMenu = useCallback((e: any) => {
+        console.log(`to ${e.currentTarget.dataset.mode} page`);
+        return <Link to={`/${e.currentTarget.dataset.mode}`} />;
     }, []);
 
     return (
@@ -23,16 +24,16 @@ const DefaultLayout = (props: React.PropsWithChildren<Props>) => {
             <TopNav onClickHamburger={onClickHamburger} />
             <BodyWrapper>
                 <HamburgerMenu show={isOpenHamburgerMenu}>
-                    <li onClick={onClickMenu} data-mode="search">
+                    <li onClick={onClickNavMenu} data-mode="search">
                         레시피 검색
                     </li>
-                    <li onClick={onClickMenu} data-mode="record">
+                    <li onClick={onClickNavMenu} data-mode="record">
                         저장된 레시피
                     </li>
-                    <li onClick={onClickMenu} data-mode="history">
+                    <li onClick={onClickNavMenu} data-mode="history">
                         요리 기록
                     </li>
-                    <li onClick={onClickMenu} data-mode="analyze">
+                    <li onClick={onClickNavMenu} data-mode="analyzed">
                         입맛 분석
                     </li>
                 </HamburgerMenu>

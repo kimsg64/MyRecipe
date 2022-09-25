@@ -1,12 +1,15 @@
 import { useCallback, useState } from 'react';
 import { Button, Error, Form, Header, Input, Label, LinkContainer, Success } from '@pages/SignUp/style';
-import { login } from '@src/firebase';
+import { login } from '@utils/firebase';
 import { Navigate } from 'react-router-dom';
 import useInput from '@hooks/useInput';
-import DefaultLayout from '@src/layouts/DefaultLayout';
+import DefaultLayout from '@layouts/DefaultLayout';
 import { Link } from 'react-router-dom';
+import useSWR from 'swr';
+import fetcher from '@utils/fetcher';
 
 const LogIn = () => {
+    const { data: userData, error, mutate } = useSWR('/api/user/me', fetcher);
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
     const [loginError, setLoginError] = useState('');
@@ -19,6 +22,7 @@ const LogIn = () => {
             setLoginError('');
             try {
                 const userCredential = await login(email, password);
+                mutate(false, false);
                 // console.log('userCredential: ', userCredential);
                 setLoginSuccess(true);
             } catch (error: any) {

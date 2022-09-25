@@ -1,5 +1,6 @@
 import useInput from '@hooks/useInput';
 import { Form, Input } from '@pages/SignUp/style';
+import DefaultLayout from '@layouts/DefaultLayout';
 import { useCallback } from 'react';
 
 const Search = () => {
@@ -11,9 +12,11 @@ const Search = () => {
     }, []);
 
     return (
-        <Form onSubmit={onSubmitForm}>
-            <Input type="text" value={keyword} onChange={onChangeKeyword} />
-        </Form>
+        <DefaultLayout>
+            <Form onSubmit={onSubmitForm}>
+                <Input type="text" value={keyword} onChange={onChangeKeyword} />
+            </Form>
+        </DefaultLayout>
     );
 };
 
