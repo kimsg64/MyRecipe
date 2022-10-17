@@ -32,7 +32,7 @@ export const TopHeader = styled.header`
         font-size: 20px;
         letter-spacing: -2px;
         font-weight: bold;
-        color: rgb(252 252 236);
+        color: rgb(40, 40, 40);
         text-decoration: none;
     }
 `;

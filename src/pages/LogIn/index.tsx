@@ -1,45 +1,42 @@
-import { useCallback, useState } from 'react';
-import { Button, Error, Form, Header, Input, Label, LinkContainer, Success } from '@pages/SignUp/style';
-import { login } from '@utils/firebase';
-import { Navigate } from 'react-router-dom';
+import React, { useCallback, useState } from 'react';
+import { Link, Navigate } from 'react-router-dom';
+
+import GuestLayout from '@layouts/GuestLayout';
+
 import useInput from '@hooks/useInput';
-import DefaultLayout from '@layouts/DefaultLayout';
-import { Link } from 'react-router-dom';
-import useSWR from 'swr';
-import fetcher from '@utils/fetcher';
+import { login } from '@utils/firebase';
+import { useUserContext } from '@contexts/UserProvider';
+
+import { Button, Error, Form, SubHeader, Input, Label, LinkContainer } from '@pages/SignUp/style';
 
 const LogIn = () => {
-    const { data: userData, error, mutate } = useSWR('/api/user/me', fetcher);
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
     const [loginError, setLoginError] = useState('');
-    const [loginSuccess, setLoginSuccess] = useState(false);
+    const { currentUser } = useUserContext();
 
     const onSubmitForm = useCallback(
-        async (e: any) => {
+        async (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
-            setLoginSuccess(false);
             setLoginError('');
             try {
                 const userCredential = await login(email, password);
-                mutate(false, false);
-                // console.log('userCredential: ', userCredential);
-                setLoginSuccess(true);
+                console.log('userCredential: ', userCredential);
             } catch (error: any) {
-                // console.log('error occured! ', error.code);
+                console.log(error);
                 setLoginError(error.code);
             }
         },
         [email, password],
     );
 
-    if (loginSuccess) {
-        return <Navigate to="/" />;
+    if (currentUser) {
+        return <Navigate to="/search" />;
     }
 
     return (
-        <DefaultLayout>
-            <Header>Login</Header>
+        <GuestLayout>
+            <SubHeader>Login</SubHeader>
             <Form onSubmit={onSubmitForm}>
                 <Label>
                     <span>Email</span>
@@ -53,14 +50,13 @@ const LogIn = () => {
                         <Input type="password" id="password" value={password} onChange={onChangePassword} />
                     </div>
                     {loginError && <Error>로그인 실패({loginError})!</Error>}
-                    {loginSuccess && <Success>로그인 성공!</Success>}
                 </Label>
                 <LinkContainer>
                     <Link to="/signup">회원가입</Link>
                 </LinkContainer>
                 <Button type="submit">Login!</Button>
             </Form>
-        </DefaultLayout>
+        </GuestLayout>
     );
 };
 

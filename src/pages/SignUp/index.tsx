@@ -1,9 +1,12 @@
 import { useCallback, useState } from 'react';
-import { Button, Error, Form, Header, Input, Label, Success } from './style';
-import { createNewUser } from '@utils/firebase';
 import { Navigate } from 'react-router-dom';
+
+import GuestLayout from '@layouts/GuestLayout';
+
 import useInput from '@hooks/useInput';
-import DefaultLayout from '@layouts/DefaultLayout';
+import { createNewUser } from '@utils/firebase';
+
+import { Button, Error, Form, SubHeader, Input, Label, Success } from './style';
 
 const SignUp = () => {
     const [email, onChangeEmail] = useInput('');
@@ -57,8 +60,8 @@ const SignUp = () => {
     }
 
     return (
-        <DefaultLayout>
-            <Header>SIGN UP</Header>
+        <GuestLayout>
+            <SubHeader>SIGN UP</SubHeader>
             <Form onSubmit={onSubmitForm}>
                 <Label>
                     <span>Email</span>
@@ -88,7 +91,7 @@ const SignUp = () => {
                 </Label>
                 <Button type="submit">Sing Up!</Button>
             </Form>
-        </DefaultLayout>
+        </GuestLayout>
     );
 };
 

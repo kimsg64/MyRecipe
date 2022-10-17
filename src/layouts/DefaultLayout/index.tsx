@@ -15,7 +15,6 @@ const DefaultLayout = (props: React.PropsWithChildren<Props>) => {
     }, []);
 
     const onClickNavMenu = useCallback((e: any) => {
-        console.log(`to ${e.currentTarget.dataset.mode} page`);
         return <Link to={`/${e.currentTarget.dataset.mode}`} />;
     }, []);
 

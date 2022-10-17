@@ -1,25 +1,22 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { HamburgerIcon, TopHeader } from './style';
-import gravatar from 'gravatar';
-import { getLoginStatus } from '@utils/firebase';
+
 import SubMenu from '@components/SubMenu/inedx';
+
+import gravatar from 'gravatar';
+
+import { useUserContext } from '@contexts/UserProvider';
+
+import { HamburgerIcon, TopHeader } from './style';
 
 interface Props {
     onClickHamburger: () => void;
 }
 
 const TopNav = (props: Props) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isOpenProfile, setIsOpenProfile] = useState(false);
-
-    useEffect(() => {
-        try {
-            getLoginStatus(setIsLoggedIn);
-        } catch (error: any) {
-            console.log(error);
-        }
-    }, []);
+    const { currentUser } = useUserContext();
+    const email = currentUser?.email ?? '';
 
     const onClickProfile = useCallback(() => {
         setIsOpenProfile((prev) => !prev);
@@ -27,17 +24,15 @@ const TopNav = (props: Props) => {
 
     return (
         <TopHeader>
+            <section>{currentUser && <HamburgerIcon onClick={props.onClickHamburger} />}</section>
             <section>
-                <HamburgerIcon onClick={props.onClickHamburger} />
+                <Link to={currentUser ? '/search' : '/'}>MyRecipe</Link>
             </section>
             <section>
-                <Link to="/">MyRecipe</Link>
-            </section>
-            <section>
-                {isLoggedIn ? (
+                {currentUser ? (
                     <>
                         <span onClick={onClickProfile}>
-                            <img src={gravatar.url('email', { s: '36px', d: 'retro' })} alt={'user'} />
+                            <img src={gravatar.url(email, { s: '36px', d: 'retro' })} alt={email} />
                         </span>
                     </>
                 ) : (

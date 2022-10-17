@@ -1,50 +1,34 @@
+import { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import { useEffect, useState } from 'react';
-import Home from '@pages/Home';
-import Loading from '@pages/Loading';
-
-import SignUp from '@pages/SignUp';
 import LogIn from '@pages/LogIn';
-
+import SignUp from '@pages/SignUp';
 import Search from '@pages/Search';
-import Record from '@pages/Record';
-import History from '@pages/History';
-import Analyzed from '@pages/Analyzed';
+
+import { UserProvider, useUserContext } from '@contexts/UserProvider';
 
 function App() {
-    const [isLoading, setIsLoading] = useState(false);
-
-    const getApi = async (fnc: () => void) => {
-        try {
-            return await fnc();
-        } catch (error) {
-            console.log('error occured!', error);
-        }
-    };
+    // check login status
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { currentUser } = useUserContext();
 
     useEffect(() => {
-        // const isloaded = getApi();
-    }, []);
+        setIsLoggedIn(false);
+        if (currentUser) {
+            setIsLoggedIn(true);
+        }
+    }, [currentUser]);
 
     return (
-        // <>
-        //     {isLoading ? (
-        //         <Loading />
-        //     ) : (
-        <Routes>
-            <Route path="/" element={<Home />} />
+        <UserProvider>
+            <Routes>
+                <Route path="/" element={isLoggedIn ? <Search /> : <LogIn />} />
+                <Route path="/login" element={<LogIn />} />
+                <Route path="/signup" element={<SignUp />} />
 
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/login" element={<LogIn />} />
-
-            <Route path="/search" element={<Search />} />
-            <Route path="/record" element={<Record />} />
-            <Route path="/history" element={<History />} />
-            <Route path="/analyzed" element={<Analyzed />} />
-        </Routes>
-        //     )}
-        // </>
+                <Route path="/search" element={<Search />} />
+            </Routes>
+        </UserProvider>
     );
 }
 
