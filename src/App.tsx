@@ -1,10 +1,13 @@
+// react & react-router
 import { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
+// components
 import LogIn from '@pages/LogIn';
 import SignUp from '@pages/SignUp';
 import Search from '@pages/Search';
 
+// utils
 import { UserProvider, useUserContext } from '@contexts/UserProvider';
 
 function App() {

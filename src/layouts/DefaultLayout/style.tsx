@@ -17,7 +17,7 @@ export const BodyWrapper = styled.div`
 `;
 
 type mainProps = {
-    show: boolean;
+    show?: boolean;
 };
 
 export const HamburgerMenu = styled.ul<mainProps>`
@@ -42,6 +42,14 @@ export const HamburgerMenu = styled.ul<mainProps>`
     }
     & li:active {
         background-color: rgb(255, 200, 100);
+    }
+
+    & a {
+        font-size: 16px;
+        letter-spacing: -2px;
+        font-weight: bold;
+        color: rgb(40, 40, 40);
+        text-decoration: none;
     }
 `;
 

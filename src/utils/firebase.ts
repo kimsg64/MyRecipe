@@ -1,14 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged,
-} from 'firebase/auth';
-import React from 'react';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -40,37 +33,4 @@ export const login = (email: string, password: string) => {
 };
 export const logout = () => {
     signOut(auth);
-};
-export const getLoginStatus = (loginStateSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            // console.log(user);
-            loginStateSetter(true);
-        } else {
-            loginStateSetter(false);
-        }
-    });
-};
-export const getUserInfo = (currentUserSetter: React.Dispatch<React.SetStateAction<string>>) => {
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            const email = user.email || '';
-            currentUserSetter(email);
-        } else {
-            currentUserSetter('');
-        }
-    });
-};
-/**참조
- * https://firebase.google.com/docs/auth/admin/import-users?hl=ko
- */
-export const getUid = (uidSetter: React.Dispatch<React.SetStateAction<string>>) => {
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            const uid = user.uid || '';
-            uidSetter(uid);
-        } else {
-            uidSetter('');
-        }
-    });
 };

@@ -1,6 +1,7 @@
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
+import Spinner from '@components/Spinner';
 import GuestLayout from '@layouts/GuestLayout';
 
 import useInput from '@hooks/useInput';
@@ -15,32 +16,16 @@ const SignUp = () => {
     const [mismatchError, setMismatchError] = useState(false);
     const [signUpError, setSignUpError] = useState(false);
     const [signUpSuccess, setSignUpSuccess] = useState(false);
-
-    const onChangePassword = useCallback(
-        (e: any) => {
-            setPassword(e.target.value);
-            setMismatchError(e.target.value !== passwordCheck);
-        },
-        [passwordCheck],
-    );
-
-    const onChangePasswordCheck = useCallback(
-        (e: any) => {
-            setPasswordCheck(e.target.value);
-            setMismatchError(e.target.value !== password);
-        },
-        [password],
-    );
+    const [isLoading, setIsLoading] = useState(false);
 
     const onSubmitForm = useCallback(
-        async (e: any) => {
+        async (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
 
-            if (mismatchError) {
-                console.log('password mismatched!');
-            } else {
+            if (!mismatchError) {
                 setSignUpSuccess(false);
                 setSignUpError(false);
+                setIsLoading(true);
                 try {
                     const userCredential = await createNewUser(email, password);
                     const user = userCredential.user;
@@ -49,10 +34,28 @@ const SignUp = () => {
                 } catch (error: any) {
                     console.log('error occured!: ', error);
                     setSignUpError(true);
+                } finally {
+                    setIsLoading(false);
                 }
             }
         },
         [email, password, mismatchError],
+    );
+
+    const onChangePassword = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            setPassword(e.target.value);
+            setMismatchError(e.target.value !== passwordCheck);
+        },
+        [passwordCheck],
+    );
+
+    const onChangePasswordCheck = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            setPasswordCheck(e.target.value);
+            setMismatchError(e.target.value !== password);
+        },
+        [password],
     );
 
     if (signUpSuccess) {
@@ -91,6 +94,8 @@ const SignUp = () => {
                 </Label>
                 <Button type="submit">Sing Up!</Button>
             </Form>
+
+            {isLoading && <Spinner />}
         </GuestLayout>
     );
 };

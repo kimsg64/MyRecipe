@@ -1,42 +1,36 @@
-import TopNav from '@components/TopNav';
-import React, { useCallback, useState } from 'react';
+import { PropsWithChildren, useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
+
+import Header from '@components/Header';
+
 import { BodyWrapper, HamburgerMenu, MainContainer, PageWrapper } from './style';
 
-interface Props {
-    children: React.PropsWithChildren;
-}
-
-const DefaultLayout = (props: React.PropsWithChildren<Props>) => {
+const DefaultLayout = ({ children }: PropsWithChildren) => {
     const [isOpenHamburgerMenu, setIsOpenHamburgerMenu] = useState(false);
 
     const onClickHamburger = useCallback(() => {
         setIsOpenHamburgerMenu((prev) => !prev);
     }, []);
 
-    const onClickNavMenu = useCallback((e: any) => {
-        return <Link to={`/${e.currentTarget.dataset.mode}`} />;
-    }, []);
-
     return (
         <PageWrapper>
-            <TopNav onClickHamburger={onClickHamburger} />
+            <Header onClickHamburger={onClickHamburger} />
             <BodyWrapper>
                 <HamburgerMenu show={isOpenHamburgerMenu}>
-                    <li onClick={onClickNavMenu} data-mode="search">
-                        레시피 검색
-                    </li>
-                    <li onClick={onClickNavMenu} data-mode="record">
-                        저장된 레시피
-                    </li>
-                    <li onClick={onClickNavMenu} data-mode="history">
-                        요리 기록
-                    </li>
-                    <li onClick={onClickNavMenu} data-mode="analyzed">
-                        입맛 분석
-                    </li>
+                    <Link to="/search">
+                        <li>레시피 검색</li>
+                    </Link>
+                    <Link to="/record">
+                        <li>저장된 레시피</li>
+                    </Link>
+                    <Link to="/history">
+                        <li>요리 기록</li>
+                    </Link>
+                    <Link to="/analyzed">
+                        <li>입맛 분석</li>
+                    </Link>
                 </HamburgerMenu>
-                <MainContainer show={isOpenHamburgerMenu}>{props.children}</MainContainer>
+                <MainContainer show={isOpenHamburgerMenu}>{children}</MainContainer>
             </BodyWrapper>
         </PageWrapper>
     );

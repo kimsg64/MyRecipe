@@ -1,23 +1,15 @@
-import React, { useCallback, useState } from 'react';
-import TopNav from '@components/TopNav';
+import React from 'react';
+
+import Header from '@components/Header';
+
 import { BodyWrapper, MainContainer, PageWrapper } from '@layouts/DefaultLayout/style';
 
-interface Props {
-    children: React.PropsWithChildren;
-}
-
-const GuestLayout = (props: React.PropsWithChildren<Props>) => {
-    const [isOpenHamburgerMenu, setIsOpenHamburgerMenu] = useState(false);
-
-    const onClickHamburger = useCallback(() => {
-        setIsOpenHamburgerMenu((prev) => !prev);
-    }, []);
-
+const GuestLayout = ({ children }: React.PropsWithChildren) => {
     return (
         <PageWrapper>
-            <TopNav onClickHamburger={onClickHamburger} />
+            <Header />
             <BodyWrapper>
-                <MainContainer show={isOpenHamburgerMenu}>{props.children}</MainContainer>
+                <MainContainer>{children}</MainContainer>
             </BodyWrapper>
         </PageWrapper>
     );

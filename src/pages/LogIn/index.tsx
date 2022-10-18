@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 
+import Spinner from '@components/Spinner';
 import GuestLayout from '@layouts/GuestLayout';
 
 import useInput from '@hooks/useInput';
@@ -14,17 +15,21 @@ const LogIn = () => {
     const [password, onChangePassword] = useInput('');
     const [loginError, setLoginError] = useState('');
     const { currentUser } = useUserContext();
+    const [isLoading, setIsLoading] = useState(false);
 
     const onSubmitForm = useCallback(
         async (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             setLoginError('');
+            setIsLoading(true);
             try {
                 const userCredential = await login(email, password);
                 console.log('userCredential: ', userCredential);
             } catch (error: any) {
                 console.log(error);
                 setLoginError(error.code);
+            } finally {
+                setIsLoading(false);
             }
         },
         [email, password],
@@ -56,6 +61,8 @@ const LogIn = () => {
                 </LinkContainer>
                 <Button type="submit">Login!</Button>
             </Form>
+
+            {isLoading && <Spinner />}
         </GuestLayout>
     );
 };

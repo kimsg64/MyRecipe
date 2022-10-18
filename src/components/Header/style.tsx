@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const TopHeader = styled.header`
+export const HeaderContainer = styled.header`
     width: 100vw;
     height: 64px;
     display: flex;
