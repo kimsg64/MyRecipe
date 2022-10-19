@@ -6,6 +6,7 @@ import { Routes, Route } from 'react-router-dom';
 import LogIn from '@pages/LogIn';
 import SignUp from '@pages/SignUp';
 import Search from '@pages/Search';
+import Add from '@pages/Add';
 
 // utils
 import { UserProvider, useUserContext } from '@contexts/UserProvider';
@@ -29,7 +30,8 @@ function App() {
                 <Route path="/login" element={<LogIn />} />
                 <Route path="/signup" element={<SignUp />} />
 
-                <Route path="/search" element={<Search />} />
+                <Route path="/search-recipe" element={<Search />} />
+                <Route path="/add-recipe" element={<Add />} />
             </Routes>
         </UserProvider>
     );

@@ -17,8 +17,11 @@ const DefaultLayout = ({ children }: PropsWithChildren) => {
             <Header onClickHamburger={onClickHamburger} />
             <BodyWrapper>
                 <HamburgerMenu show={isOpenHamburgerMenu}>
-                    <Link to="/search">
+                    <Link to="/search-recipe">
                         <li>레시피 검색</li>
+                    </Link>
+                    <Link to="/add-recipe">
+                        <li>레시피 등록</li>
                     </Link>
                     <Link to="/record">
                         <li>저장된 레시피</li>

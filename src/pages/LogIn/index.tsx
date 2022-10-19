@@ -36,7 +36,7 @@ const LogIn = () => {
     );
 
     if (currentUser) {
-        return <Navigate to="/search" />;
+        return <Navigate to="/search-recipe" />;
     }
 
     return (

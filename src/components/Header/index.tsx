@@ -17,6 +17,8 @@ const Header = ({ onClickHamburger }: HeaderProps) => {
     const { currentUser } = useUserContext();
     const email = currentUser?.email ?? '';
 
+    console.log('user: ', currentUser);
+
     const onClickProfile = useCallback(() => {
         setIsOpenProfile((prev) => !prev);
     }, []);
@@ -25,7 +27,7 @@ const Header = ({ onClickHamburger }: HeaderProps) => {
         <HeaderContainer>
             <section>{currentUser && <HamburgerIcon onClick={onClickHamburger} />}</section>
             <section>
-                <Link to={currentUser ? '/search' : '/'}>MyRecipe</Link>
+                <Link to={currentUser ? '/search-recipe' : '/'}>MyRecipe</Link>
             </section>
             <section>
                 {currentUser ? (
