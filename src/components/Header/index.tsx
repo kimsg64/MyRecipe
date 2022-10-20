@@ -17,7 +17,7 @@ const Header = ({ onClickHamburger }: HeaderProps) => {
     const { currentUser } = useUserContext();
     const email = currentUser?.email ?? '';
 
-    console.log('user: ', currentUser);
+    // console.log('user: ', currentUser);
 
     const onClickProfile = useCallback(() => {
         setIsOpenProfile((prev) => !prev);

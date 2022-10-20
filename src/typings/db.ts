@@ -10,14 +10,14 @@ export interface IIngredient {
 }
 
 export interface IUsedIngredient {
-    amount: Number;
+    amount: number;
     ingredient: IIngredient;
 }
 
 export interface IStep {
-    description: String;
-    sequence: Number;
-    usedIngredients: IUsedIngredient[];
+    description?: String;
+    sequence: number;
+    usedIngredients?: IUsedIngredient[];
     input?: File;
     url?: String;
     tag?: HTMLImageElement;
