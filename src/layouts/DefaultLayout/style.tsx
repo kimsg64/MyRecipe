@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 export const PageWrapper = styled.div`
     width: 100%;
     min-height: 100vh;
+    /* overflow: hidden; */
     display: flex;
     flex-direction: column;
     align-items: center;

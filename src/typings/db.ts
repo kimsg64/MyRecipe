@@ -1,12 +1,12 @@
 export interface IUser {
-    password: String;
-    nickname: String;
-    email: String;
+    password: string;
+    nickname: string;
+    email: string;
 }
 
 export interface IIngredient {
-    name: String;
-    unit: String;
+    name: string;
+    unit: string;
 }
 
 export interface IUsedIngredient {
@@ -15,17 +15,17 @@ export interface IUsedIngredient {
 }
 
 export interface IStep {
-    description?: String;
+    description?: string;
     sequence: number;
     usedIngredients?: IUsedIngredient[];
     input?: File;
-    url?: String;
+    url?: string;
     tag?: HTMLImageElement;
 }
 
 export interface IRecipe {
-    owner: String;
-    cuisine: String;
+    owner: string;
+    cuisine: string;
     ingredients: IIngredient[];
     steps: IStep[];
     isBest: Boolean;

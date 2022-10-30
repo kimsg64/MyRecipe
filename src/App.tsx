@@ -11,6 +11,9 @@ import Add from '@pages/Add';
 // utils
 import { UserProvider, useUserContext } from '@contexts/UserProvider';
 
+// libs
+import { Scrollbars } from 'react-custom-scrollbars';
+
 function App() {
     // check login status
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,14 +28,16 @@ function App() {
 
     return (
         <UserProvider>
-            <Routes>
-                <Route path="/" element={isLoggedIn ? <Search /> : <LogIn />} />
-                <Route path="/login" element={<LogIn />} />
-                <Route path="/signup" element={<SignUp />} />
+            <Scrollbars style={{ width: '100vw', height: '100vh' }}>
+                <Routes>
+                    <Route path="/" element={isLoggedIn ? <Search /> : <LogIn />} />
+                    <Route path="/login" element={<LogIn />} />
+                    <Route path="/signup" element={<SignUp />} />
 
-                <Route path="/search-recipe" element={<Search />} />
-                <Route path="/add-recipe" element={<Add />} />
-            </Routes>
+                    <Route path="/search-recipe" element={<Search />} />
+                    <Route path="/add-recipe" element={<Add />} />
+                </Routes>
+            </Scrollbars>
         </UserProvider>
     );
 }
