@@ -18,9 +18,7 @@ export interface IStep {
     description?: string;
     sequence: number;
     usedIngredients?: IUsedIngredient[];
-    input?: File;
     url?: string;
-    tag?: HTMLImageElement;
 }
 
 export interface IRecipe {

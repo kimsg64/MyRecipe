@@ -79,15 +79,40 @@ export const CustomSwiper = {
 
 export const CustomSwiperSlide = {
     width: '200px',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: 'block',
     border: '1px solid black',
     borderRadius: '4px',
+    padding: '12px',
+    overflow: 'hidden',
 };
 
-export const TextArea = Input.withComponent('textarea');
+export const SlideBackground = styled.span((props) => ({
+    width: '100%',
+    height: '100%',
+    background: `url(${props.url})`,
+}));
 
-export const FileInput = styled.input`
-    width: 100%;
+export const SildeTitle = styled.span`
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 4px;
+    height: 24px;
 `;
+
+export const SlideDescription = styled.span`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    line-height: 1.2em;
+    height: 9.6em;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 8;
+    margin: 1em 0;
+
+    &:hover {
+        cursor: pointer;
+    }
+`;
+
+export const TextArea = Input.withComponent('textarea');

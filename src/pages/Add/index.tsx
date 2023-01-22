@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 
 import DefaultLayout from '@layouts/DefaultLayout';
 import { Input, Label } from '@pages/SignUp/style';
@@ -6,17 +6,19 @@ import {
     ButtonsContainer,
     CustomSwiper,
     CustomSwiperSlide,
-    FileInput,
     LabelsGroup,
     ListItem,
     ListWrapper,
+    SildeTitle,
+    SlideBackground,
+    SlideDescription,
     SmallButton,
     TextArea,
     WideForm,
 } from './style';
 
 import useInput from '@hooks/useInput';
-import { db, uploadSteps } from '@utils/firebase';
+import { db } from '@utils/firebase';
 import { addDoc, collection } from 'firebase/firestore';
 import { useUserContext } from '@contexts/UserProvider';
 import { IStep, IRecipe, IUsedIngredient } from '@typings/db';
@@ -26,6 +28,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import FileUploader from '@components/FileUploader';
 
 const GUEST = 'GUEST';
 const getRandomColors = () => {
@@ -35,7 +38,7 @@ const getRandomColors = () => {
     while (candidates.length > 0) {
         shuffled.push(candidates.splice(Math.floor(Math.random() * candidates.length), 1)[0]);
     }
-    console.log('shuffled', shuffled);
+    // console.log('shuffled', shuffled);
     return shuffled;
 };
 const COLORS = getRandomColors();
@@ -49,6 +52,7 @@ const Add = () => {
     const [ingredients, setIngredients] = useState<IUsedIngredient[]>([]);
     const [steps, setSteps] = useState<IStep[]>([{ sequence: 1 }]);
     const [description, onChangeDescription, setDescription] = useInput('');
+    const [url, setUrl] = useState('');
 
     const onSubmitForm = useCallback(
         async (e: React.FormEvent<HTMLFormElement>) => {
@@ -77,47 +81,35 @@ const Add = () => {
     );
 
     const onClickAddIngredientButton = useCallback(() => {
-        const newIngredient: IUsedIngredient = {
-            amount: amountOfIngredient,
-            ingredient: {
-                name: nameOfIngredient,
-                unit: unitOfIngredient,
-            },
-        };
-        setIngredients((prev) => [...prev, newIngredient]);
-    }, [amountOfIngredient, nameOfIngredient, unitOfIngredient]);
-
-    const onInputFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            const target = e.target.files[0];
-            if (target.type.startsWith('image/')) {
-                try {
-                    console.log('check target', target);
-                    // 파일 화면에 표시
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        console.log('file read', event.target?.result);
-                    };
-                    reader.readAsDataURL(target);
-                } catch (error) {
-                    console.dir(error);
-                }
+        let existingOne = ingredients.find((ingredient) => ingredient.ingredient.name === nameOfIngredient);
+        setIngredients((prev) => {
+            if (existingOne) {
+                existingOne = { ...existingOne, amount: Number(existingOne.amount) + Number(amountOfIngredient) };
+                return [...prev.filter((ingredient) => ingredient.ingredient.name !== nameOfIngredient), existingOne];
             } else {
-                alert('you can upload only image files!');
+                const newIngredient: IUsedIngredient = {
+                    amount: amountOfIngredient,
+                    ingredient: {
+                        name: nameOfIngredient,
+                        unit: unitOfIngredient,
+                    },
+                };
+                return [...prev, newIngredient];
             }
-        }
-    }, []);
+        });
+    }, [ingredients, amountOfIngredient, nameOfIngredient, unitOfIngredient]);
 
     const onClickAddStepButton = useCallback(() => {
         if (description) {
             setSteps((prev) =>
-                [...prev, { sequence: prev[prev.length - 1].sequence++, description }].sort(
-                    (a, b) => a.sequence - b.sequence,
-                ),
+                [...prev, { sequence: prev[prev.length - 1].sequence++, description, url }].sort((a, b) => {
+                    return a.sequence - b.sequence;
+                }),
             );
             setDescription('');
+            setUrl('');
         }
-    }, [description, setDescription]);
+    }, [description, setDescription, url]);
 
     return (
         <DefaultLayout>
@@ -130,7 +122,7 @@ const Add = () => {
                 </Label>
 
                 <LabelsGroup>
-                    <span>재료명 </span>
+                    <span>재료명</span>
                     <div>
                         <Input value={nameOfIngredient} type="text" onChange={onChangeNameOfIngredient} />
                     </div>
@@ -165,9 +157,7 @@ const Add = () => {
                 </Label>
                 <Label>
                     <span>사진을 추가하세요!</span>
-                    <div>
-                        <FileInput type="file" accept=".gif, .jpg, .png, .bmp" onChange={onInputFile} />
-                    </div>
+                    <FileUploader />
                 </Label>
 
                 <ButtonsContainer>
@@ -193,8 +183,10 @@ const Add = () => {
                         steps.map((step, i) => {
                             return (
                                 <SwiperSlide style={CustomSwiperSlide}>
-                                    <span>Step {i + 1}</span>
-                                    <span>{step.description}</span>
+                                    <SlideBackground url={step.url} />
+                                    <SildeTitle>Step{i + 1}</SildeTitle>
+                                    <br />
+                                    <SlideDescription>{step.description}</SlideDescription>
                                 </SwiperSlide>
                             );
                         })}
